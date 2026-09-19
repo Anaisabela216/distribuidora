@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribuidora - Gestão</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-100 font-sans text-slate-800">
+
+ <!-- Cabeçalho -->
+    <header class="bg-slate-900 text-white p-4 shadow-md flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-truck-ramp-box text-2xl text-amber-500"></i>
+            <h1 class="text-xl font-bold">Distribuidora de Bebidas — Painel de Controle</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <label class="text-sm font-medium">Data de Entrada:</label>
+            <input type="date" id="dataEntrada" class="bg-slate-800 text-white border border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-6 space-y-6">
+
+<!--Cards-->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500 font-medium">Total Comprado</p>
+                    <h3 id="kpiComprado" class="text-2xl font-bold text-slate-900">0 cx</h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <i class="fa-solid fa-boxes-packing text-xl"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500 font-medium">Sobras no Galpão</p>
+                    <h3 id="kpiSobra" class="text-2xl font-bold text-amber-600">0 cx</h3>
+                </div>
+                <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
+                    <i class="fa-solid fa-warehouse text-xl"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-slate-500 font-medium">Previsão para Recomprar</p>
+                    <h3 id="kpiPrevisao" class="text-2xl font-bold text-emerald-600">0 cx</h3>
+                </div>
+                <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+                    <i class="fa-solid fa-cart-flatbed text-xl"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Principal: Formulário + Gráficos -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Painel de Entrada de Dados -->
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-slate-500"></i> Entrada de Estoque por Categoria
+                </h2>
+
+                <!-- Tabela de Produtos -->
+                <div class="overflow-x-auto max-h-[420px] overflow-y-auto pr-2">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead class="bg-slate-50 sticky top-0 border-b border-slate-200 text-slate-600">
+                            <tr>
+                                <th class="p-3">Categoria / Item</th>
+                                <th class="p-3 w-32">Comprado (cx)</th>
+                                <th class="p-3 w-32">Sobra (cx)</th>
+                                <th class="p-3 w-32 text-right">A Comprar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaProdutos" class="divide-y divide-slate-100">
+                            <!-- Inserido dinamicamente via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button id="btnCalcular" onclick="processarEstoque()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-5 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrows-rotate"></i> Atualizar Cálculos
+                    </button>
+                </div>
+            </div>
+
+            <!-- Painel do Gráfico Visual -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-slate-500"></i> Resumo Visual
+                    </h2>
+                    <div class="relative h-64">
+                        <canvas id="graficoEstoque"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs text-slate-600 space-y-1">
+                    <p class="font-semibold text-slate-800">Dica de Gestão:</p>
+                    <p>O volume ideal de sobra em galpão não deve ultrapassar 20% do volume total de compras da distribuidora.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
